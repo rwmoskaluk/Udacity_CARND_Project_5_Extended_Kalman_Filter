@@ -25,3 +25,4 @@ ide_profiles/xcode/ExtendedKF.build/
 ide_profiles/
 windows_sim/
 .idea/
+.idea/workspace.xml
