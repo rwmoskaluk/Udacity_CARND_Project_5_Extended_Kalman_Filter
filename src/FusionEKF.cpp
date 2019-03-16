@@ -144,7 +144,7 @@ void FusionEKF::ProcessMeasurement(const MeasurementPackage &measurement_pack) {
    * TODO: Update the process noise covariance matrix.
    * Use noise_ax = 9 and noise_ay = 9 for your Q matrix.
    */
-  cout << "Predicting"
+  cout << "Predicting" << endl;
   double delta_time = (measurement_pack.timestamp_ - previous_timestamp_) / 1000000.0; // convert to seconds
   previous_timestamp_ = measurement_pack.timestamp_;
 
