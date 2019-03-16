@@ -3,6 +3,7 @@
 
 #include "Eigen/Dense"
 #include "tools.h"
+#include "iostream"
 
 class KalmanFilter {
  public:

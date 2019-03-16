@@ -174,14 +174,17 @@ void FusionEKF::ProcessMeasurement(const MeasurementPackage &measurement_pack) {
    * - Update the state and covariance matrices.
    */
   cout << "updating" << endl;
-  cout << "sensor type = " << measurement_pack.sensor_type_ << endl;
   if (measurement_pack.sensor_type_ == MeasurementPackage::RADAR) {
     // TODO: Radar updates
-    ekf_.UpdateEKF(measurement_pack.raw_measurements_);
+      cout << "sensor type = Radar" << endl;
+
+      ekf_.UpdateEKF(measurement_pack.raw_measurements_);
 
   } else {
     // TODO: Laser updates
-    ekf_.Update(measurement_pack.raw_measurements_);
+      cout << "sensor type = Lidar" << endl;
+
+      ekf_.Update(measurement_pack.raw_measurements_);
   }
 
   // print the output

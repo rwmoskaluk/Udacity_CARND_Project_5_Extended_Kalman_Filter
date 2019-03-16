@@ -47,6 +47,7 @@ void KalmanFilter::UpdateEKF(const VectorXd &z) {
    * TODO: update the state by using Extended Kalman Filter equations
    */
   MatrixXd Hj = tools_.CalculateJacobian(x_);
+  std::cout << "Hj calculated" << Hj << std::endl;
   UpdateKalmanOptimized(z, Hj, R_radar_, true);
 }
 
