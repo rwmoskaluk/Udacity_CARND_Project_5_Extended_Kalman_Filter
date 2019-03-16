@@ -107,10 +107,16 @@ void KalmanFilter::UpdateKalmanOptimized(const VectorXd &z_in, const MatrixXd &H
 
     //new estimate
     x_ = x_ + (K * y);
-    std::cout << "x_ " << x_ << std::endl;
+    std::cout << "x_ = " << x_ << std::endl;
 
     long x_size = x_.size();
     MatrixXd I = MatrixXd::Identity(x_size, x_size);
+    std::cout << "I = " << I << std::endl;
+
+    std::cout << "H_ = " << H_ << std::endl;
+    std::cout << "P_ = " << P_ << std::endl;
+
+
     P_ = (I - K * H_) * P_;
     std::cout << "P_ = " << P_ << std::endl;
 
