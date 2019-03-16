@@ -15,11 +15,36 @@ Once the install for uWebSocketIO is complete, the main program can be built and
 4. make
 5. ./ExtendedKF
 
-Tips for setting up your environment can be found in the classroom lesson for this project.
+NOTES for Windows 10 Setup
+---
+Initially following the Udacity project help for setting everything up to run on a Windows computer did not result in uWebSocket working.  What I ended up doing in order to get this project to work is as follows:
 
-Note that the programs that need to be written to accomplish the project are src/FusionEKF.cpp, src/FusionEKF.h, kalman_filter.cpp, kalman_filter.h, tools.cpp, and tools.h
-
-The program main.cpp has already been filled out, but feel free to modify it.
+1) Follow the instructions for installing Linux Bash (I installed Ubuntu version on my Windows 10 Machine)
+https://www.howtogeek.com/249966/how-to-install-and-use-the-linux-bash-shell-on-windows-10/
+2) After creating a UNIX username and password run `sudo apt-get update`
+3) Once updated I ran `sudo apt-get install git`
+4) `sudo apt-get install cmake`
+5) `sudo apt-get install openssl`
+6) `sudo apt-get install libssl-dev`
+7) `git clone https://github.com/rwmoskaluk/Udacity_CARND_Project_5_Extended_Kalman_Filter`
+8) `cd Udacity_CARND_Project_5_Extended_Kalman_Filter`
+9) `chmod a+x install-linux.sh`
+10) `./install-linux.sh`
+11) This ran for a bit but did not appear to install uWebSocket, to install uWebSocket I manually did the following
+12) `git clone https://github.com/uWebSockets/uWebSockets `
+13) `cd uWebSockets `
+14) `git checkout e94b6e1`
+15) `mkdir build`
+16) `cd build`
+17) `cmake ..`
+18) `make`
+19) `sudo make install` (uWebSockets should now be installed under /usr/lib64)
+20) switch back over to the Udacity project folder
+21) create build folder in the Udacity project folder if it doesn't exist already
+22) `cd build`
+23) `cmake ..`
+24) `make`
+25) `./ExtendedKF` to run the project, should see listening port 4567
 
 Here is the main protocol that main.cpp uses for uWebSocketIO in communicating with the simulator.
 
@@ -37,6 +62,14 @@ OUTPUT: values provided by the c++ program to the simulator
 ["rmse_y"]
 ["rmse_vx"]
 ["rmse_vy"]
+
+# Video Output
+For dataset 1
+<img src="video_output/dataset_1.gif?raw=true" width="720px">
+
+For dataset 2
+<img src="video_output/dataset_2.gif?raw=true" width="720px">
+
 
 ---
 
@@ -81,49 +114,4 @@ This is optional!
 If you'd like to generate your own radar and lidar data, see the
 [utilities repo](https://github.com/udacity/CarND-Mercedes-SF-Utilities) for
 Matlab scripts that can generate additional data.
-
-## Project Instructions and Rubric
-
-Note: regardless of the changes you make, your project must be buildable using
-cmake and make!
-
-More information is only accessible by people who are already enrolled in Term 2
-of CarND. If you are enrolled, see [the project resources page](https://classroom.udacity.com/nanodegrees/nd013/parts/40f38239-66b6-46ec-ae68-03afd8a601c8/modules/0949fca6-b379-42af-a919-ee50aa304e6a/lessons/f758c44c-5e40-4e01-93b5-1a82aa4e044f/concepts/382ebfd6-1d55-4487-84a5-b6a5a4ba1e47)
-for instructions and the project rubric.
-
-## Hints and Tips!
-
-* You don't have to follow this directory structure, but if you do, your work
-  will span all of the .cpp files here. Keep an eye out for TODOs.
-* Students have reported rapid expansion of log files when using the term 2 simulator.  This appears to be associated with not being connected to uWebSockets.  If this does occur,  please make sure you are conneted to uWebSockets. The following workaround may also be effective at preventing large log files.
-
-    + create an empty log file
-    + remove write permissions so that the simulator can't write to log
- * Please note that the ```Eigen``` library does not initialize ```VectorXd``` or ```MatrixXd``` objects with zeros upon creation.
-
-## Call for IDE Profiles Pull Requests
-
-Help your fellow students!
-
-We decided to create Makefiles with cmake to keep this project as platform
-agnostic as possible. Similarly, we omitted IDE profiles in order to ensure
-that students don't feel pressured to use one IDE or another.
-
-However! We'd love to help people get up and running with their IDEs of choice.
-If you've created a profile for an IDE that you think other students would
-appreciate, we'd love to have you add the requisite profile files and
-instructions to ide_profiles/. For example if you wanted to add a VS Code
-profile, you'd add:
-
-* /ide_profiles/vscode/.vscode
-* /ide_profiles/vscode/README.md
-
-The README should explain what the profile does, how to take advantage of it,
-and how to install it.
-
-Regardless of the IDE used, every submitted project must
-still be compilable with cmake and make.
-
-## How to write a README
-A well written README file can enhance your project and portfolio.  Develop your abilities to create professional README files by completing [this free course](https://www.udacity.com/course/writing-readmes--ud777).
 
