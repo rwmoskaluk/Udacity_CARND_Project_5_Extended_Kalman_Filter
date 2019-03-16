@@ -2,6 +2,7 @@
 #include <iostream>
 #include "Eigen/Dense"
 #include "tools.h"
+#include "math.h"
 
 using Eigen::MatrixXd;
 using Eigen::VectorXd;
@@ -78,7 +79,6 @@ void FusionEKF::ProcessMeasurement(const MeasurementPackage &measurement_pack) {
      */
 
     // first measurement
-    cout << "EKF: " << endl;
     ekf_.x_ = VectorXd(4);
 
     if (measurement_pack.sensor_type_ == MeasurementPackage::RADAR) {
@@ -129,6 +129,23 @@ void FusionEKF::ProcessMeasurement(const MeasurementPackage &measurement_pack) {
    * Use noise_ax = 9 and noise_ay = 9 for your Q matrix.
    */
 
+  double delta_time = (measurement_pack.timestamp_ - previous_timestamp_) / 1000000.0; // convert to seconds
+  previous_timestamp_ = measurement_pack.timestamp_;
+
+  //update state transition matrix F
+  ekf_.F_(0, 2) = delta_time;
+  ekf_.F_(1, 3) = delta_time;
+
+  double delta_time2 = pow(delta_time, 2);
+  double delta_time3 = pow(delta_time, 3);
+  double delta_time4 = pow(delta_time, 4);
+
+  //update process covariance matrix Q
+  ekf_.Q_ << (0.25 * delta_time4 * noise_ax_), 0, (0.5 * delta_time3 * noise_ax_), 0,
+            0, (0.25 * delta_time4 * noise_ay_), 0, (0.5 * delta_time3 * noise_ay_),
+          (0.5 * delta_time3 * noise_ax_), 0, (delta_time2 * noise_ax_), 0,
+          0, (0.5 * delta_time3 * noise_ay_), 0, (delta_time2 * noise_ay_);
+
   ekf_.Predict();
 
   /**
@@ -143,10 +160,15 @@ void FusionEKF::ProcessMeasurement(const MeasurementPackage &measurement_pack) {
 
   if (measurement_pack.sensor_type_ == MeasurementPackage::RADAR) {
     // TODO: Radar updates
+    ekf_.H_ = tools.CalculateJacobian(ekf_.x_);
+    ekf_.R_ = R_radar_;
+    ekf_.UpdateEKF(measurement_pack.raw_measurements_);
 
   } else {
     // TODO: Laser updates
-
+    ekf_.H_ = H_laser_;
+    ekf_.R_ = R_radar_;
+    ekf_.Update(measurement_pack.raw_measurements_);
   }
 
   // print the output
