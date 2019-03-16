@@ -93,6 +93,14 @@ void FusionEKF::ProcessMeasurement(const MeasurementPackage &measurement_pack) {
       // rate
       double rho_dot = measurement_pack.raw_measurements_[2];
 
+      //normalize phi for between -PI and PI
+      while (phi > M_PI) {
+        phi -= 2.0 * M_PI;
+      }
+      while (phi < -M_PI) {
+        phi += 2.0 * M_PI;
+      }
+
       double px = rho * cos(phi);
 
       double py = rho * sin(phi);
@@ -100,6 +108,14 @@ void FusionEKF::ProcessMeasurement(const MeasurementPackage &measurement_pack) {
       double vx = rho_dot * cos(phi);
 
       double vy = rho_dot * sin(phi);
+
+      cout << " rho = " << rho << endl;
+      cout << " phi = " << phi << endl;
+      cout << " rho_dot = " << rho_dot << endl;
+      cout << " px = " << px << endl;
+      cout << " py = " << py << endl;
+      cout << " vx = " << vx << endl;
+      cout << " vy = " << vy << endl;
 
       ekf_.x_ << px, py, vx, vy;
 
@@ -112,7 +128,7 @@ void FusionEKF::ProcessMeasurement(const MeasurementPackage &measurement_pack) {
 
 
     previous_timestamp_ = measurement_pack.timestamp_;
-
+    cout << "EKF Initial Results" << ekf_.x_ << endl;
     // done initializing, no need to predict or update
     is_initialized_ = true;
     return;
@@ -128,7 +144,7 @@ void FusionEKF::ProcessMeasurement(const MeasurementPackage &measurement_pack) {
    * TODO: Update the process noise covariance matrix.
    * Use noise_ax = 9 and noise_ay = 9 for your Q matrix.
    */
-
+  cout << "Predicting"
   double delta_time = (measurement_pack.timestamp_ - previous_timestamp_) / 1000000.0; // convert to seconds
   previous_timestamp_ = measurement_pack.timestamp_;
 
@@ -157,7 +173,7 @@ void FusionEKF::ProcessMeasurement(const MeasurementPackage &measurement_pack) {
    * - Use the sensor type to perform the update step.
    * - Update the state and covariance matrices.
    */
-
+  cout << "updating"
   if (measurement_pack.sensor_type_ == MeasurementPackage::RADAR) {
     // TODO: Radar updates
     ekf_.H_ = tools.CalculateJacobian(ekf_.x_);
