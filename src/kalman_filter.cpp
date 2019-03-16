@@ -74,6 +74,7 @@ void KalmanFilter::UpdateKalmanOptimized(const VectorXd &z_in, const MatrixXd &H
 
         x_polar << rho, phi, rho_dot;
 
+        std::cout << "x polar = " << x_polar << std::endl;
         y = z_in - x_polar;
 
         // normalize the angle between -pi to pi
@@ -84,18 +85,33 @@ void KalmanFilter::UpdateKalmanOptimized(const VectorXd &z_in, const MatrixXd &H
         while(y(1) < -M_PI){
             y(1) += 2 * M_PI;
         }
+        std::cout << "y = " << y << std::endl;
 
     }
 
     MatrixXd Ht = H_in.transpose();
+    std::cout << "Ht = " << Ht << std::endl;
+
     MatrixXd S = H_in * P_ * Ht + R_in;
+    std::cout << "S = " << S << std::endl;
+
     MatrixXd Si = S.inverse();
+    std::cout << "Si = " << Si << std::endl;
+
     MatrixXd PHt = P_ * Ht;
+    std::cout << "PHt = " << PHt << std::endl;
+
     MatrixXd K = PHt * Si;
+    std::cout << "K = " << K << std::endl;
+
 
     //new estimate
     x_ = x_ + (K * y);
+    std::cout << "x_ " << x_ << std::endl;
+
     long x_size = x_.size();
     MatrixXd I = MatrixXd::Identity(x_size, x_size);
     P_ = (I - K * H_) * P_;
+    std::cout << "P_ = " << P_ << std::endl;
+
 }
