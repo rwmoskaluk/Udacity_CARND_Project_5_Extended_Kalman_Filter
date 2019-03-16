@@ -65,9 +65,11 @@ OUTPUT: values provided by the c++ program to the simulator
 
 # Video Output
 ###For Dataset 1
+
 <img src="video_output/dataset_1.gif?raw=true" width="720px">
 
 ###For Dataset 2
+
 <img src="video_output/dataset_2.gif?raw=true" width="720px">
 
 
