@@ -64,10 +64,10 @@ OUTPUT: values provided by the c++ program to the simulator
 ["rmse_vy"]
 
 # Video Output
-For dataset 1
+###For Dataset 1
 <img src="video_output/dataset_1.gif?raw=true" width="720px">
 
-For dataset 2
+###For Dataset 2
 <img src="video_output/dataset_2.gif?raw=true" width="720px">
 
 
@@ -94,22 +94,7 @@ For dataset 2
    * On windows, you may need to run: `cmake .. -G "Unix Makefiles" && make`
 4. Run it: `./ExtendedKF `
 
-## Editor Settings
-
-We've purposefully kept editor configuration files out of this repo in order to
-keep it as simple and environment agnostic as possible. However, we recommend
-using the following settings:
-
-* indent using spaces
-* set tab width to 2 spaces (keeps the matrices in source code aligned)
-
-## Code Style
-
-Please (do your best to) stick to [Google's C++ style guide](https://google.github.io/styleguide/cppguide.html).
-
 ## Generating Additional Data
-
-This is optional!
 
 If you'd like to generate your own radar and lidar data, see the
 [utilities repo](https://github.com/udacity/CarND-Mercedes-SF-Utilities) for
