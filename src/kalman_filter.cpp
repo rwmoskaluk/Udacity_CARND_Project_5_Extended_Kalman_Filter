@@ -8,9 +8,9 @@ using Eigen::VectorXd;
  *   VectorXd or MatrixXd objects with zeros upon creation.
  */
 
-KalmanFilter::KalmanFilter() {}
+KalmanFilter::KalmanFilter() = default;
 
-KalmanFilter::~KalmanFilter() {}
+KalmanFilter::~KalmanFilter() = default;
 
 Tools KalmanFilter::tools_ = Tools();
 
@@ -57,7 +57,7 @@ void KalmanFilter::UpdateKalmanOptimized(const VectorXd &z_in, const MatrixXd &H
 
     if (!flag_ekf) {
         VectorXd z_pred = H_ * x_;
-        VectorXd y = z_in - z_pred;
+        y = z_in - z_pred;
     }
     else {
 
