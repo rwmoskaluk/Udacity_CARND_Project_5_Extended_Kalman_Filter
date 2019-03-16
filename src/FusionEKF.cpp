@@ -36,7 +36,28 @@ FusionEKF::FusionEKF() {
    * TODO: Finish initializing the FusionEKF.
    * TODO: Set the process and measurement noises
    */
+    H_laser_ << 1, 0, 0, 0,
+                0, 1, 0, 0;
 
+    noise_ax_ = 9.0;
+    noise_ay_ = 9.0;
+
+    //state covariance matrix
+    ekf_.P_ = MatrixXd(4, 4);
+    ekf_.P_ << 1, 0, 0, 0,
+            0, 1, 0, 0,
+            0, 0, 1000, 0,
+            0, 0, 0, 1000;
+
+    //state transition matrix
+    ekf_.F_ = MatrixXd(4, 4);
+    ekf_.F_ << 1, 0, 0, 0,
+                0, 1, 0, 0,
+                0, 0, 1, 0,
+                0, 0, 0, 1;
+
+    //process covariance matrix
+    ekf_.Q_ = MatrixXd(4, 4);
 
 }
 
@@ -59,17 +80,38 @@ void FusionEKF::ProcessMeasurement(const MeasurementPackage &measurement_pack) {
     // first measurement
     cout << "EKF: " << endl;
     ekf_.x_ = VectorXd(4);
-    ekf_.x_ << 1, 1, 1, 1;
 
     if (measurement_pack.sensor_type_ == MeasurementPackage::RADAR) {
       // TODO: Convert radar from polar to cartesian coordinates 
       //         and initialize state.
+      //range
+      double rho = measurement_pack.raw_measurements_[0];
+
+      // bearing
+      double phi = measurement_pack.raw_measurements_[1];
+
+      // rate
+      double rho_dot = measurement_pack.raw_measurements_[2];
+
+      double px = rho * cos(phi);
+
+      double py = rho * sin(phi);
+
+      double vx = rho_dot * cos(phi);
+
+      double vy = rho_dot * sin(phi);
+
+      ekf_.x_ << px, py, vx, vy;
 
     }
     else if (measurement_pack.sensor_type_ == MeasurementPackage::LASER) {
-      // TODO: Initialize state.
-
+      // TODO: Initialize state
+      // no velocity info for lidar measurement
+      ekf_.x_ << measurement_pack.raw_measurements_[0], measurement_pack.raw_measurements_[1], 0, 0;
     }
+
+
+    previous_timestamp_ = measurement_pack.timestamp_;
 
     // done initializing, no need to predict or update
     is_initialized_ = true;
